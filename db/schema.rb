@@ -10,7 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_05_133850) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_08_092808) do
+  create_table "tasks", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.date "due_date"
+    t.integer "priority"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "assigner_id"
+    t.integer "assignee_id"
+    t.index ["assignee_id"], name: "index_tasks_on_assignee_id"
+    t.index ["assigner_id"], name: "index_tasks_on_assigner_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "username"
@@ -18,6 +31,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_05_133850) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "role"
   end
 
+  add_foreign_key "tasks", "users", column: "assignee_id"
+  add_foreign_key "tasks", "users", column: "assigner_id"
 end

@@ -22,7 +22,15 @@ class UsersController < ApplicationController
              status: :unprocessable_entity
     end
   end
+def assigned_tasks
+  @user = User.find(params[:id])
+  @assigned_tasks = @user.assigned_tasks
+end
 
+def received_tasks
+  @user = User.find(params[:id])
+  @received_tasks = @user.received_tasks
+end
   
   def update
     unless @user.update(user_params)
@@ -45,8 +53,7 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.permit(
-      :avatar, :name, :username, :email, :password, :password_confirmation
+    params.permit( :name, :username, :email, :password, :password_confirmation
     )
   end
 end

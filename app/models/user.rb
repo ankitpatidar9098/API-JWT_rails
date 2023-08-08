@@ -7,6 +7,10 @@ class User < ApplicationRecord
   validates :password,
             length: { minimum: 6 },
             if: -> { new_record? || !password.nil? }
-
-
+  
+  enum role: { emp: 0, admin: 1}
+  validates :role, inclusion: { in: roles.keys }
+   has_many :tasks ,dependent: :destroy
+    has_many :assigned_tasks, class_name: 'Task', foreign_key: 'assigner_id'
+  has_many :received_tasks, class_name: 'Task', foreign_key: 'assignee_id'
 end
